@@ -1,7 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
-using Domain;
+using DAL;
+using Infrastructure.Repositories;
+using DAL.Models;
 
 namespace ReactWebstore
 {
@@ -17,9 +19,11 @@ namespace ReactWebstore
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("ReactWebstore")));
 
             //dependency injection
-            builder.Services.AddTransient<StoreDBContext>();
+            builder.Services.AddScoped<StoreDBContext>();
+            builder.Services.AddTransient<IRepository<Product>, ProductRepository>();
 
             builder.Services.AddControllers();
+            builder.Services.AddControllers().AddNewtonsoftJson();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

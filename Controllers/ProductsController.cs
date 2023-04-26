@@ -1,5 +1,8 @@
-﻿using Domain;
-using Domain.Models;
+﻿using AutoMapper;
+using DAL.DTO;
+using DAL.Models;
+using Infrastructure.Automapper;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,36 +13,38 @@ namespace ReactWebstore.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly StoreDBContext storeDBContext;
-
-        public ProductsController(StoreDBContext _storeDBContext)
+        private readonly IRepository<Product> _productRepository;
+        
+        public ProductsController(IRepository<Product> productRepository)
         {
-            storeDBContext = _storeDBContext;
+            _productRepository = productRepository;
         }
         // GET: api/<Product>
         [HttpGet]
         public IEnumerable<Product> Get()
         {
-            return storeDBContext.Products.ToList();
+            return _productRepository.All();
         }
 
         // GET api/<Product>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Product Get(int id)
         {
-            return "value";
+            return _productRepository.Get(id);
         }
 
-        // POST api/<Product>
+        // POST api/<Product> ADD
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post(Product product)
         {
+            _productRepository.Add(product);
         }
 
         // PUT api/<Product>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, Product product)
         {
+            _productRepository.Update(product);
         }
 
         // DELETE api/<Product>/5
