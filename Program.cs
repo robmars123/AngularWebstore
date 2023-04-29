@@ -18,6 +18,11 @@ namespace ReactWebstore
             builder.Services.AddDbContextPool<StoreDBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("ReactWebstore")));
 
+            builder.Services.AddCors(opt => {
+                opt.AddPolicy("CorsPolicy", policy => {
+                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200");
+                });
+            });
             //dependency injection
             builder.Services.AddScoped<StoreDBContext>();
             builder.Services.AddTransient<IRepository<Product>, ProductRepository>();
@@ -36,6 +41,7 @@ namespace ReactWebstore
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 

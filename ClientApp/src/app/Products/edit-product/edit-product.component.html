@@ -1,0 +1,33 @@
+<h5>Edit Product</h5>
+<div class="p-3 shadow">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Product Name</label>
+            <div class="col-sm-4">
+              <input  class="form-control" [ngModel]="product.product_Name" formControlName="productName">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-4">
+              <textarea class="form-control" formControlName="description" rows="3" [ngModel]="product.description"></textarea>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Unit Price</label>
+            <div class="col-sm-4">
+              <input  class="form-control"  [ngModel]="product.price" [value]="product.price" formControlName="price">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Quantity</label>
+            <div class="col-sm-4">
+              <input  class="form-control"  [ngModel]="product.quantityPerUnit" [value]="product.quantityPerUnit" formControlName="quantityPerUnit" >
+            </div>
+          </div>
+          <button type="submit" class="" class="form-group btn btn-custom shadow-sm border rounded-0" (click)="goBack()">Back</button>
+          <button type="submit" class="" class="form-group btn btn-custom shadow-sm border rounded-0">Save Changes</button>
+            <span class="mx-3 text-success">{{notification}}</span>
+      </form>
+  </div>

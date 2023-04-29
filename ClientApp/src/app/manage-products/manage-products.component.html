@@ -1,0 +1,41 @@
+<p class="text-center">{{title}}</p>
+<div class="mb-2">
+    <button type="button" class="btn btn-custom shadow-sm border rounded-0" routerLink="/add-product" routerLinkActive="active">Add Product</button>
+</div>
+
+<div class="p-3 shadow">
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Product ID</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Unit Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            <!--Row-->
+            <ng-container *ngFor="let product of products">
+                <tr>
+                    <th scope="row">{{product.product_Id}}</th>
+                    <td>{{product.product_Name}}</td>
+                    <td>{{product.description}}</td>
+                    <td>{{product.quantityPerUnit}}</td>
+                    <td>${{product.price}}</td>
+                    <td>
+                      <button type="button" class="btn btn-custom rounded-0" routerLink="/edit-product/{{product.product_Id}}" routerLinkActive="active">
+                        Edit</button>
+                      </td>
+                      <td>
+                        <button type="button" class="btn btn-custom rounded-0" (click)="onSubmit(product.product_Id)">
+                          Delete</button>
+                        </td>
+                  </tr>
+            </ng-container>
+    
+        </tbody>
+      </table>
+</div>
+

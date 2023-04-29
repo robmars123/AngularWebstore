@@ -1,0 +1,42 @@
+<h5>Add New Product</h5>
+<div class="p-3 shadow">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row mb-3">
+      <label for="inputEmail3" class="col-sm-2 col-form-label" >Product Name</label>
+      <div class="col-sm-4">
+        <input class="form-control" formControlName="productName">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">Description</label>
+      <div class="col-sm-4">
+        <textarea class="form-control"  rows="3" formControlName="description"></textarea>      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">Unit Price</label>
+      <div class="col-sm-4">
+        <input  class="form-control"  formControlName="price">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">Quantity</label>
+      <div class="col-sm-4">
+        <input class="form-control"  formControlName="quantityPerUnit">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">Category_Id</label>
+      <div class="col-sm-4">
+        <input class="form-control"  formControlName="category_Id">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="inputPassword3" class="col-sm-2 col-form-label">Sub-category</label>
+      <div class="col-sm-4">
+        <input class="form-control"  formControlName="subcategory_Id">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-custom shadow-sm border rounded-0">Add Product</button>
+  </form>
+</div>
+

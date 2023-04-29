@@ -51,6 +51,8 @@ namespace ReactWebstore.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            var product = _productRepository.Get(id);
+            _productRepository.Delete(product);
         }
     }
 }
