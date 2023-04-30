@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using DAL.DTO;
-using DAL.Models;
-using Infrastructure.Automapper;
+﻿using DAL.Models;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +11,7 @@ namespace ReactWebstore.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IRepository<Product> _productRepository;
-        
+
         public ProductsController(IRepository<Product> productRepository)
         {
             _productRepository = productRepository;
@@ -54,5 +51,13 @@ namespace ReactWebstore.Controllers
             var product = _productRepository.Get(id);
             _productRepository.Delete(product);
         }
+        [HttpPost("UploadCSV")]
+        [Consumes("application/json")]
+        public void UploadCSV([FromBody] string data)
+        {
+            _productRepository.ProcessUpload(data);
+        }
     }
+
+
 }
