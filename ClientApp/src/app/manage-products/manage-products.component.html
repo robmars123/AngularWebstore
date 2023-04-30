@@ -1,9 +1,18 @@
 <p class="text-center">{{title}}</p>
 <div class="mb-2">
     <button type="button" class="btn btn-custom shadow-sm border rounded-0" routerLink="/add-product" routerLinkActive="active">Add Product</button>
+    <input
+        #fileUploadSimple
+        [accept]="'.csv'"
+        type="file"
+        class="file-input"
+        (change)="importDataFromCSV($event)"
+        hidden="true"
+    />
+<button (click)="fileUploadSimple.click()" class="mx-2">Import from csv</button>
 </div>
 
-<div class="p-3 shadow">
+<div class="p-3 shadow table-responsive">
     <table class="table table-striped">
         <thead>
           <tr>

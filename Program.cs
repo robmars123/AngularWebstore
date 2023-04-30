@@ -1,9 +1,7 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
 using DAL;
-using Infrastructure.Repositories;
 using DAL.Models;
+using Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ReactWebstore
 {
@@ -18,8 +16,10 @@ namespace ReactWebstore
             builder.Services.AddDbContextPool<StoreDBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("ReactWebstore")));
 
-            builder.Services.AddCors(opt => {
-                opt.AddPolicy("CorsPolicy", policy => {
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
                     policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:4200");
                 });
             });

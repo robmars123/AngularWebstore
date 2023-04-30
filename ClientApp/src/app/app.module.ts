@@ -10,6 +10,7 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 import { ManageProductsComponent } from './manage-products/manage-products.component';
 import { AddProductComponent } from './products/add-product/add-product.component';
 import { EditProductComponent } from './products/edit-product/edit-product.component';
+import { CSVService } from './Services/CSVService';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { EditProductComponent } from './products/edit-product/edit-product.compo
     ReactiveFormsModule,
     HttpClientModule //added this for http request
   ],
-  providers: [],
+  providers: [CSVService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
