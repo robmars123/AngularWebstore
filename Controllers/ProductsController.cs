@@ -1,6 +1,9 @@
 ﻿using DAL.Models;
+using Infrastructure.EmailService;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +15,12 @@ namespace ReactWebstore.Controllers
     {
         private readonly IRepository<Product> _productRepository;
 
-        public ProductsController(IRepository<Product> productRepository)
+        public readonly IEmailService<Email> emailService;
+
+        public ProductsController(IRepository<Product> productRepository, IEmailService<Email> _emailService)
         {
             _productRepository = productRepository;
+            emailService = _emailService;
         }
         // GET: api/<Product>
         [HttpGet]
@@ -53,9 +59,11 @@ namespace ReactWebstore.Controllers
         }
         [HttpPost("UploadCSV")]
         [Consumes("application/json")]
-        public void UploadCSV([FromBody] string data)
+        public async Task UploadCSV([FromBody] string data)
         {
             _productRepository.ProcessUpload(data);
+
+            emailService.ProcessEmail();
         }
     }
 
