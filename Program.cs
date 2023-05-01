@@ -1,5 +1,6 @@
 using DAL;
 using DAL.Models;
+using Infrastructure.EmailService;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ namespace ReactWebstore
             // Add services to the container.
             //add database data context connection
             builder.Services.AddDbContextPool<StoreDBContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("ReactWebstore")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("AngularWebstore")));
 
             builder.Services.AddCors(opt =>
             {
@@ -26,6 +27,8 @@ namespace ReactWebstore
             //dependency injection
             builder.Services.AddScoped<StoreDBContext>();
             builder.Services.AddTransient<IRepository<Product>, ProductRepository>();
+            //email service
+            builder.Services.AddTransient<IEmailService<Email>, EmailServiceRepository>();
 
             builder.Services.AddControllers();
             builder.Services.AddControllers().AddNewtonsoftJson();
