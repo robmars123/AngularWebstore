@@ -3,8 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Infrastructure.Repositories;
 using ReactWebstore.Controllers;
-using ReactWebstore.ViewModels;
 using Castle.Core.Smtp;
+using Infrastructure.Repositories.EmailService;
+using Infrastructure.Repositories.Products;
+using Infrastructure.Repositories.Interfaces;
 
 namespace Web.Test
 {
@@ -16,11 +18,13 @@ namespace Web.Test
         {
             //ARRANGE
             var productRepository = new Mock<IRepository<Product>>(); //declare
-            var emailService = new Mock<EmailServiceRepository>();
+            var emailService = new Mock<IEmailService<Email>>();
+            var productImageRepository = new Mock<IProductImage<ProductImage>>();
 
             var orderController = new ProductsController( //call controller
                 productRepository.Object, //add otehr repository
-                emailService.Object
+                emailService.Object,
+                productImageRepository.Object
             );
 
             //insert mock data

@@ -1,11 +1,11 @@
 ﻿using DAL;
 using DAL.Models;
-using Infrastructure.EmailService;
+using Infrastructure.Repositories.Generics;
 using System.Data;
 using System.Net;
 using System.Net.Mail;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories.EmailService
 {
     public class EmailServiceRepository : GenericEmailService<Email>
     {
@@ -16,12 +16,12 @@ namespace Infrastructure.Repositories
             context = _context;
         }
 
-        public override void ProcessEmail()
+        public override async void ProcessEmail()
         {
             string email = OrganizationEmailConfiguration.EmailAddress;
             string subject = OrganizationEmailConfiguration.Subject;
             string message = OrganizationEmailConfiguration.Message; //should be from database
-            SendEmailAsync(email, subject, message);
+            await SendEmailAsync(email, subject, message);
         }
         public override async Task<Email> SendEmailAsync(string email, string subject, string message)
         {
@@ -45,7 +45,7 @@ namespace Infrastructure.Repositories
 
                 if (emailEntity != null)
                 {
-                    await AddEmail(emailEntity);
+                    await AddEmailAsync(emailEntity);
                 }
                 //send the email
                 using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
@@ -56,11 +56,11 @@ namespace Infrastructure.Repositories
                     await smtp.SendMailAsync(mail);
                 }
             }
-            
+
             return emailEntity;
         }
 
-        public override async Task AddEmail(Email entity)
+        public override async Task AddEmailAsync(Email entity)
         {
             await context.AddAsync(entity);
             SaveChangesAsync();

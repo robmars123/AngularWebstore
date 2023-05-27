@@ -12,7 +12,8 @@ const routes: Routes = [
   { path: 'manage-products', component: ManageProductsComponent},
   { path: 'add-product', component: AddProductComponent},
   { path: 'edit-product/:id', component: EditProductComponent},
-  { path: '**', component: ProductsComponent } // If no matching route found, go back to home route
+  { path: '**', loadChildren: () => import('../Products/Product-List/product-list.module')
+                            .then((x) => x.ProductListModule) } // If no matching route found, go back to home route
 ];
 
 @NgModule({

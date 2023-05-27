@@ -1,6 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { ProductImage } from 'src/app/Models/ProductImage';
+import { FileUploadService } from 'src/app/Services/file-upload.service';
+import { Product } from 'src/app/Models/Product';
+
 
 @Component({
   selector: 'app-products',
@@ -8,15 +12,60 @@ import { Routes } from '@angular/router';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent {
-  products: any;
-
-  constructor(private http: HttpClient) {}
+  response: any;
+  productsList: Product[] = [];
+  productImages: ProductImage[] = [];
+  count :number = 0;
+  currentPage :number = 1;
+  totalProducts: number = 10;
+  pageSize: number= 10;
+  isDataLoaded = false;
+  productTotalCount: number = 0;
+  filter: string = "Most_Relevant";
+  filters: any[] = ["Most_Relevant","Price", "Date_Added"];
+  constructor(private http: HttpClient,
+    private uploadService: FileUploadService 
+    ) {}
     
   ngOnInit(): void{
-      this.http.get('https://localhost:7165/api/Products').subscribe({
-        next: response =>this.products = response,
-        error: error => console.log(error),
-        complete: () => console.log('Request has completed.')
-      })
+    //initial load
+      this.fetchData();
     }
+  loadData(){
+      this.productsList = this.response.data;
+      this.productTotalCount = this.response.totalRecords;
+      this.loadAllImagesFromDB();
+  }
+  fetchData(): void {
+    this.http.get<any[]>('https://localhost:7165/api/Products?pageNumber='+this.currentPage+'&pageSize='+this.pageSize+'&filterString='+this.filter)
+      .subscribe({
+          next: response =>this.response = response,
+          error: error => console.log(error),
+          complete: () => this.loadData()
+        });
+  }
+
+  //Query all images
+  loadAllImagesFromDB(){
+    this.uploadService.getAllImages().subscribe(data => {
+      this.productImages = data;
+
+      //map product images per  product
+      this.productsList.forEach(_product => {
+        _product.images = this.productImages.filter((_img: any) => _img.product_Id == _product.product_Id);
+    });
+    });
+  }
+
+  onPageChange(event: any) {
+    // reset page if items array has changed
+    if (event !== this.currentPage) {
+        this.currentPage = event;
+        this.fetchData();
+    }
+}
+selected(){
+  this.fetchData();
+}
+
 }

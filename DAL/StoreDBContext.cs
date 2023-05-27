@@ -1,5 +1,8 @@
 ﻿using DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Options;
 
 namespace DAL
 {
@@ -23,16 +26,22 @@ namespace DAL
         public virtual DbSet<Email> Emails { get; set; }
         public virtual DbSet<ProductAuditLog> ProductAuditLogs { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Add the shadow property to the model
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Product>
-                (entry =>
-            {
-                entry.ToTable("Products", tb => tb.HasTrigger("ProductAuditLogTrigger"));
-            });
+            //modelBuilder.Entity<Product>
+            //    (entry =>
+            //{
+            //    entry.ToTable("Products", tb => tb.HasTrigger("ProductAuditLogTrigger"));
+            //});
+
+           // modelBuilder.Entity<Product>().HasMany<ProductImage>(pi => pi.ProductImages);
         }
     }
 }

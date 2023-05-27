@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Infrastructure.Automapper
 {
@@ -17,7 +18,10 @@ namespace Infrastructure.Automapper
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Product, ProductDTO>();
-                cfg.CreateMap<ProductDTO, Product>();
+                //.ForMember(dest => dest.Images, act => act.Ignore())
+                //                    .ForMember(dest => dest.Categories, opt => opt.Ignore())
+                //                    .ForMember(dest => dest.Subcategories, opt => opt.Ignore());
+
                 //Any Other Mapping Configuration ....
             });
             //Create an Instance of Mapper and return that Instance
