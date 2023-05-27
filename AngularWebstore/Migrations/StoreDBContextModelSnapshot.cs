@@ -18,6 +18,9 @@ namespace ReactWebstore.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -320,10 +323,11 @@ namespace ReactWebstore.Migrations
 
                     b.HasKey("Product_Id");
 
-                    b.ToTable("Products", null, t =>
-                        {
-                            t.HasTrigger("ProductAuditLogTrigger");
-                        });
+                    b.HasIndex("Category_id");
+
+                    b.HasIndex("Subcategory_id");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("DAL.Models.ProductAuditLog", b =>
@@ -360,6 +364,9 @@ namespace ReactWebstore.Migrations
                     b.Property<byte[]>("Image")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
 
                     b.HasKey("Image_Id");
 
@@ -442,6 +449,25 @@ namespace ReactWebstore.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("DAL.Models.Product", b =>
+                {
+                    b.HasOne("DAL.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("Category_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Subcategory", "Subcategory")
+                        .WithMany()
+                        .HasForeignKey("Subcategory_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Subcategory");
                 });
 #pragma warning restore 612, 618
         }

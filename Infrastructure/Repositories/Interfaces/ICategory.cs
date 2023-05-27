@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories.Interfaces
 {
-    public interface IProductUploadProcessor
+    public interface ICategory
     {
-        void ProcessUpload(string data);
+        IEnumerable<Category> GetCategories();
     }
 }

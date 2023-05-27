@@ -11,13 +11,13 @@ import { ManageProductsComponent } from './manage-products/manage-products.compo
 import { AddProductComponent } from './products/add-product/add-product.component';
 import { EditProductComponent } from './products/edit-product/edit-product.component';
 import { CSVService } from './Services/CSVService';
+import { FileUploadService } from './Services/file-upload.service';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductsComponent,
     ProductDetailsComponent,
-    ManageProductsComponent,
     AddProductComponent,
     EditProductComponent
   ],
@@ -26,9 +26,10 @@ import { CSVService } from './Services/CSVService';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule //added this for http request
+    NgxPaginationModule,
+    HttpClientModule,//added this for http request
   ],
-  providers: [CSVService],
+  providers: [CSVService, FileUploadService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

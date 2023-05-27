@@ -26,7 +26,13 @@
         </thead>
         <tbody>
             <!--Row-->
-            <ng-container *ngFor="let product of products">
+            <ng-container *ngFor="let product of products| paginate
+            : {
+                itemsPerPage: totalProducts,
+                currentPage: currentPage,
+                totalItems: productTotalCount
+              };
+                let i = index">
                 <tr>
                     <th scope="row">{{product.product_Id}}</th>
                     <td>{{product.product_Name}}</td>
@@ -43,8 +49,10 @@
                         </td>
                   </tr>
             </ng-container>
-    
         </tbody>
       </table>
+</div>
+<div class="d-flex justify-content-center mt-3">
+  <pagination-controls  (pageChange)="onPageChange($event)"></pagination-controls>
 </div>
 

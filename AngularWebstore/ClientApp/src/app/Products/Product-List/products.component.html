@@ -1,20 +1,38 @@
 
          <!-- CAROUSEL START-->
         <section class="py-5 text-center container">
-                <div class="">
-                  <div class="img-wrap"><img class="img-fluid" src="https://cb.scene7.com/is/image/Crate/cb_dPLP_20230209_OutdoorDinnerwareV2?wid=1440&qlt=85&op_sharpen=1"></div>
+                <div class="col-lg-10 mx-auto">
+                  <div class="img-wrap">
+                    <img class="img-fluid" src="https://cb.scene7.com/is/image/Crate/cb_dPLP_20230209_OutdoorDinnerwareV2?wid=1440&qlt=85&op_sharpen=1">
+                </div>
                 </div>
           </section>
           <!-- CAROUSEL END-->
           
+          <!-- FILTERS -->
+          <select class="custom-select mb-2" [(ngModel)]="filter" (change)="selected()">
+            <option *ngFor="let fil of filters" [ngValue]="fil"  >{{fil}}</option>
+          </select>
+          <!-- FILTERS END -->
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <ng-container *ngFor="let product of products">
+            <ng-container *ngFor="let product of productsList 
+            | paginate
+            : {
+                itemsPerPage: totalProducts,
+                currentPage: currentPage,
+                totalItems: productTotalCount
+              };
+                let i = index">
        
                     <!--cards-->
-                    <div class="col-md-4">
-                        <figure class="card card-product rounded-0 border-0" style="height: 500px;" routerLink="/product-details/{{product.product_Id}}" routerLinkActive="active">
-                            <div class="img-fluid"><img class="img-fluid" src="https://cb.scene7.com/is/image/Crate/FauxBoisMelDinnerPltSSS21/$web_pdp_main_carousel_med$/201215170032/faux-bois-melamine-dinner-plate.jpg"></div>
-                            <div class="bottom-wrap text-center mt-3">
+                    <div class="col-md-3">
+                        <figure class="card card-product rounded-0 border-0" style="height: 500px;" routerLink="/product-details/{{product.product_Id}}">
+                            <div class="col-md-12 img-fluid">
+
+                              <!-- <img class="img-fluid" src="https://cb.scene7.com/is/image/Crate/FauxBoisMelDinnerPltSSS21/$web_pdp_main_carousel_med$/201215170032/faux-bois-melamine-dinner-plate.jpg"> -->
+                              <img [src]="product?.images[0]?.convertedProductImage || '../../assets/default-image.png'" class="img-fluid" />
+                            </div>
+                              <div class="bottom-wrap text-center mt-3">
                                 <span class="small">New Arrival</span>
                                 <h5 class="title">{{product.product_Name}}</h5>	
                                 <div class="price-wrap h6">
@@ -24,10 +42,11 @@
                             </div> <!-- bottom-wrap.// -->
                         </figure>
                     </div>
-            
               </ng-container>
           </div>
-
+          <div class="d-flex justify-content-center">
+            <pagination-controls  (pageChange)="onPageChange($event)"></pagination-controls>
+          </div>
 
 
 

@@ -21,6 +21,37 @@
             </div>
           </div>
           <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-4">
+              <select class="custom-select" formControlName="category_id" [(ngModel)]="product.category.category_Id"> <!--server model-->
+                <option value="">Choose category</option>
+                <option *ngFor="let cat of categories" [ngValue]="cat.category_Id">{{cat.category_Name}}</option><!--dropdown array-->
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Sub-Category</label>
+            <div class="col-sm-4">
+              <select class="custom-select" formControlName="subcategory_id" [(ngModel)]="product.subcategory.subcategory_Id">
+                <select class="custom-select" formControlName="subcategory_id" [(ngModel)]="product.subcategory.subcategory_Id"></select>
+                <option value="">Choose Sub-category</option>
+                <option *ngFor="let sub of subCategories" [ngValue]="sub.subcategory_Id">{{sub.subcategory_Name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label  class="col-sm-2 col-form-label">Upload Image</label>
+            <div class="col-sm-4">
+              <input
+                style="display: none"
+                type="file" (change)="onFileChanged($event)"
+                #fileInput>
+                {{recentUploadFileName || "No file uploaded yet."}}
+              <button type="button" (click)="fileInput.click()">Select File</button>
+              <!-- <button (click)="onUpload()">Upload!</button> -->
+            </div>
+          </div>
+          <div class="row mb-3">
             <label  class="col-sm-2 col-form-label">Quantity</label>
             <div class="col-sm-4">
               <input  class="form-control"  [ngModel]="product.quantityPerUnit" formControlName="quantityPerUnit" >
@@ -28,6 +59,13 @@
           </div>
           <button type="submit" class="" class="form-group btn btn-custom shadow-sm border rounded-0" (click)="goBack()">Back</button>
           <button type="submit" class="" class="form-group btn btn-custom shadow-sm border rounded-0">Save Changes</button>
-            <span class="mx-3 text-success">{{notification}}</span>
+            <span class="mx-3 text-success">{{notification}}</span>  
       </form>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <ng-container *ngFor="let image of imageList">
+                <div class="col-md-2">
+                  <img [src]="image?.convertedProductImage" class="card-img-top" [alt]="image.productId" />
+                </div>
+          </ng-container>
+      </div>
   </div>

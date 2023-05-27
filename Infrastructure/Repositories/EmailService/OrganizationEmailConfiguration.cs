@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.EmailService
+﻿namespace Infrastructure.Repositories.EmailService
 {
     public static class OrganizationEmailConfiguration
     {
@@ -17,7 +17,8 @@
             {
             }
         }
-        public static string Message {
+        public static string Message
+        {
             get
             {
                 return _message;
@@ -26,7 +27,8 @@
             {
             }
         }
-        public static string Subject {
+        public static string Subject
+        {
             get
             {
                 return _subject;
@@ -35,7 +37,8 @@
             {
             }
         }
-        public static string Password {
+        public static string Password
+        {
             get
             {
                 return _password;

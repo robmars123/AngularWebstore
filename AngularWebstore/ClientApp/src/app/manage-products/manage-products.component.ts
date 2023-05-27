@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { tap } from 'rxjs/operators';
 import { Subject, Observable} from 'rxjs';
 import { CSVService } from '../Services/CSVService';
+import { Product } from '../Models/Product';
 
 @Component({
   selector: 'app-manage-products',
@@ -13,11 +14,16 @@ import { CSVService } from '../Services/CSVService';
 })
 export class ManageProductsComponent {
   title = "Admin Dashboard";
-  products: any;
+  products: Product[] = [];
   UploadCSV: any;
-
+  response: any;
+  isDataLoaded = false;
+  currentPage :number = 1;
+  totalProducts: number = 10;
+  pageSize: number= 10;
   public importedData: Array<any> = [];
-
+  productTotalCount: number = 0;
+  filter: string = "Most_Relevant";
   constructor(
     private route: ActivatedRoute,
     // private heroService: HeroService,
@@ -30,21 +36,26 @@ export class ManageProductsComponent {
       this.fetchData();
   }
 
+  loadData(){
+      this.products = this.response.data;
+      this.productTotalCount = this.response.totalRecords;
+  }
+
   onSubmit(id: any): void{
     this.http.delete('https://localhost:7165/api/Products/' + id).subscribe({
       //next: response =>this.products = response,
       error: error => console.log(error),
       complete: () => this.fetchData() //reactive functionality
-    })
+    });
   }
 
   fetchData(){
-    this.http.get('https://localhost:7165/api/Products/')
+    this.http.get<any[]>('https://localhost:7165/api/Products?pageNumber='+this.currentPage+'&pageSize='+this.pageSize+'&filterString='+this.filter)
     .subscribe({
-      next: response =>this.products = response,
+      next: response =>this.response = response,
       error: error => console.log(error),
-      complete: () => console.log('Request has completed.')
-    })
+      complete: () => this.loadData()
+    });
   }
 
   uploadDataToServer(){
@@ -72,4 +83,12 @@ export class ManageProductsComponent {
 
     this.uploadDataToServer();
   }
+
+  onPageChange(event: any) {
+    // reset page if items array has changed
+    if (event !== this.currentPage) {
+        this.currentPage = event;
+        this.fetchData();
+    }
+}
 }

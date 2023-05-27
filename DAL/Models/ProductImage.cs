@@ -13,6 +13,7 @@ namespace DAL.Models
         [Key]
         public int Image_Id { get; set; }
         public byte[] Image { get; set; }
+        public int Product_Id { get; set; }
         [NotMapped]
         public string ConvertedProductImage 
         {
@@ -22,6 +23,5 @@ namespace DAL.Models
             }
             set { }
         }
-
     }
 }

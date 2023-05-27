@@ -2,12 +2,14 @@
 using DAL.DTO;
 using DAL.Models;
 using Infrastructure.Automapper;
-using Infrastructure.EmailService;
 using Infrastructure.Processors;
+using Infrastructure.Repositories.Generics;
+using Infrastructure.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure.Repositories.Products
 {
-    public class ProductRepository : GenericRepository<Product>, IProductUploadProcessor
+    public class ProductRepository : GenericRepository<Product>, IProductUploadProcessor, ICategory, ISubcategory
     {
         private ProductUploadProcessor _processor;
         private readonly StoreDBContext context;
@@ -35,35 +37,47 @@ namespace Infrastructure.Repositories
         }
         public override void Add(Product entity)
         {
-            base.Add(entity);
-            SaveChanges();
+                base.Add(entity);
+                SaveChanges();
         }
 
         public override void Delete(Product entity)
         {
-            if(entity != null)
+            if (entity != null)
             {
                 context.Products.Remove(entity);
                 SaveChanges();
             }
         }
-        public override IEnumerable<Product> All()
+        public override IQueryable<Product> All()
         {
-            return context.Products.ToList();
+            return context.Products.AsQueryable();
         }
 
         public override Product Get(int id)
         {
-            return context.Products.Find(id);
+            var item = context.Products.Find(id);
+            return item;
         }
 
-        public async override void ProcessUpload(string data)
+        public override async Task ProcessUploadAsync(string data)
         {
             _processor = new ProductUploadProcessor();
             var records = _processor.Process(data);
 
-            context.Products.AddRange(records);
+            await context.Products.AddRangeAsync(records);
             SaveChanges();
+        }
+
+        //todo: make separate repository
+        public override IEnumerable<Category> GetCategories()
+        {
+            return context.Categories.ToList();
+        }
+
+        public override IEnumerable<Subcategory> GetSubcategories()
+        {
+            return context.Subcategories.ToList();
         }
     }
 }

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.EmailService
+namespace Infrastructure.Repositories.Interfaces
 {
     public interface IEmailService<T>
     {
         void ProcessEmail();
         Task<T> SendEmailAsync(string email, string subject, string message);
-        Task AddEmail(T entity);
+        Task AddEmailAsync(T entity);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DAL;
+using Infrastructure.Repositories.Interfaces;
 
-namespace Infrastructure.EmailService
+namespace Infrastructure.Repositories.Generics
 {
     public abstract class GenericEmailService<T> : IEmailService<T> where T : class
     {
@@ -25,9 +26,9 @@ namespace Infrastructure.EmailService
             context.SaveChangesAsync();
         }
 
-        public virtual async Task AddEmail(T entity)
+        public virtual async Task AddEmailAsync(T entity)
         {
-             await context.AddAsync(entity);
+            await context.AddAsync(entity);
         }
     }
 }

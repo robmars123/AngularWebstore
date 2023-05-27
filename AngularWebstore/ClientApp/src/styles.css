@@ -38,3 +38,6 @@ ul {
     display: inline-block;
     font-size: 13px;
   }
+
+  .link {
+    cursor:pointer;}
